@@ -17,13 +17,21 @@ public class GUI extends JFrame{
 
     public GUI(){
         super("Test_RS");
-        this.setBounds(100,100,800,500);
+        this.setBounds(250,250,700,200);
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-        JPanel controlPanel = new JPanel(new GridLayout(5,1));
-        JPanel tablePanel = new JPanel();
+        JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(null);
+        controlPanel.setBounds(5, 5, 100, 100);
+
+        tablesComboBox.setBounds(10,10,100,20);
+        selectButton.setBounds(10,40,100,20);
+        updateButton.setBounds(10,70,100,20);
+        insertButton.setBounds(10,100,100,20);
+        deleteButton.setBounds(10,130,100,20);
 
         controlPanel.add(tablesComboBox);
         controlPanel.add(selectButton);
@@ -31,25 +39,17 @@ public class GUI extends JFrame{
         controlPanel.add(insertButton);
         controlPanel.add(deleteButton);
 
+        updateButton.setEnabled(false);
+        insertButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+
         JScrollPane scrollPane = new JScrollPane(table);
-        table.setFillsViewportHeight(true);
-        tablePanel.add(scrollPane);
+        table.setDefaultEditor(Object.class, null);
+        table.getTableHeader().setReorderingAllowed(false);
+
         mainPanel.add(controlPanel);
-        mainPanel.add(tablePanel);
+        mainPanel.add(scrollPane);
         this.add(mainPanel);
 
-        /*Container control_container = this.getContentPane();
-        control_container.setLayout(new GridLayout(1,5,2,2));
-        Container list_container = this.getContentPane();
-        list_container.setLayout(new GridLayout(1,1,2,2));
-        JScrollPane scrollPane = new JScrollPane(table);
-        table.setFillsViewportHeight(true);
-
-        control_container.add(tablesComboBox);
-        control_container.add(selectButton);
-        control_container.add(updateButton);
-        control_container.add(insertButton);
-        control_container.add(deleteButton);
-        list_container.add(scrollPane);*/
     }
 }
