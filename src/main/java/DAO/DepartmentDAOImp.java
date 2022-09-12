@@ -56,11 +56,30 @@ public class DepartmentDAOImp implements DepartmentDAO{
 
     @Override
     public int insert(Department expression) throws SQLException {
+        Connection con = Database.getConnection();
+        String sql = "insert into Departments (id, dep_name, email, phone) values (?, ?, ?, ?)";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, expression.getId());
+        ps.setString(2, expression.getDep_name());
+        ps.setString(3, expression.getEmail());
+        ps.setString(4, expression.getPhone());
+        ps.executeUpdate();
+
         return 0;
     }
 
     @Override
-    public int update(Department expression) throws SQLException {
+    public int update(Department expression, int oldId) throws SQLException {
+        Connection con = Database.getConnection();
+        String sql = "update Departments set id = ?, dep_name = ?, email = ?, phone = ? where id = ?;";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, expression.getId());
+        ps.setString(2, expression.getDep_name());
+        ps.setString(3, expression.getEmail());
+        ps.setString(4, expression.getPhone());
+        ps.setInt(5, oldId);
+        ps.executeUpdate();
+
         return 0;
     }
 

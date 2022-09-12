@@ -55,11 +55,31 @@ public class EmployeeDAOImp implements EmployeeDAO {
 
     @Override
     public int insert(Employee expression) throws SQLException {
+        Connection con = Database.getConnection();
+        String sql = "insert into Employees (id, boss_id, first_name, last_name) values (?, ?, ?, ?)";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, expression.getId());
+        ps.setInt(2, expression.getBoss_id());
+        ps.setString(3, expression.getFirst_name());
+        ps.setString(4, expression.getLast_name());
+        ps.executeUpdate();
+
         return 0;
     }
 
     @Override
-    public int update(Employee expression) throws SQLException {
+    public int update(Employee expression, int oldId) throws SQLException {
+
+        Connection con = Database.getConnection();
+        String sql = "update Employees set id = ?, boss_id = ?, first_name = ?, last_name = ? where id = ?;";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, expression.getId());
+        ps.setInt(2, expression.getBoss_id());
+        ps.setString(3, expression.getFirst_name());
+        ps.setString(4, expression.getLast_name());
+        ps.setInt(5, oldId);
+        ps.executeUpdate();
+
         return 0;
     }
 

@@ -1,44 +1,53 @@
+package GUI;
+
 import DAO.*;
-import DTO.Department;
-import DTO.Employee;
-import DTO.Position;
-import TableFactory.EmployeesFactory;
-import TableFactory.DepartmentsFactory;
-import TableFactory.PositionsFactory;
-import TableFactory.TableFactory;
-import TableFactory.Table;
+import DTO.*;
+import InsertFactory.InsertFactory;
+import UpdateFactory.UpdateFactory;
+import TableFactory.*;
+import UpdateFactory.*;
+import  InsertFactory.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 
 
-public class GUI extends JFrame {
-    private JButton selectButton = new JButton("Показать");
-    private JButton updateButton = new JButton("Изменить");
-    private JButton insertButton = new JButton("Добавить");
-    private JButton deleteButton = new JButton("Удалить");
+public class MainFrame extends JFrame {
     private String[] tablesList = {"Должности", "Отделы", "Сотрудники"};
     private JComboBox tablesComboBox = new JComboBox(tablesList);
     private TableFactory tableFactory = null;
+    private InsertFactory insertFactory = null;
+    private UpdateFactory updateFactory = null;
+    private Update additionalUpdate = null;
+    private Insert additionalInsert = null;
     private Table table = null;
     private JScrollPane scrollPane = null;
-
-    public GUI() {
-        super("Test_RS");
+    public MainFrame() {
+        super("Учёт сотрудников предприятия");
         this.setBounds(250, 250, 600, 250);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ImageIcon img = new ImageIcon("src/main/java/Images/sql.png");
+        this.setIconImage(img.getImage());
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);
         mainPanel.setBounds(0, 0, 600, 200);
         mainPanel.setBorder(BorderFactory.createEtchedBorder());
 
+        JButton selectButton = new JButton("Показать");
+        JButton updateButton = new JButton("Изменить");
+        JButton insertButton = new JButton("Добавить");
+        JButton deleteButton = new JButton("Удалить");
+        JButton helpButton = new JButton("Помощь");
+
         tablesComboBox.setBounds(10, 10, 100, 20);
         selectButton.setBounds(10, 40, 100, 20);
         insertButton.setBounds(10, 70, 100, 20);
         updateButton.setBounds(10, 100, 100, 20);
         deleteButton.setBounds(10, 130, 100, 20);
+        helpButton.setBounds(10, 180, 100, 20);
 
         updateButton.setEnabled(false);
         insertButton.setEnabled(false);
@@ -49,6 +58,7 @@ public class GUI extends JFrame {
         mainPanel.add(updateButton);
         mainPanel.add(insertButton);
         mainPanel.add(deleteButton);
+        mainPanel.add(helpButton);
 
 
         this.add(mainPanel);
@@ -60,14 +70,60 @@ public class GUI extends JFrame {
             updateButton.setEnabled(true);
             insertButton.setEnabled(true);
             deleteButton.setEnabled(true);
+
         });
 
         deleteButton.addActionListener(e -> {
 
-            removeRow(mainPanel);
+            removeRow();
             makeTable(mainPanel);
-            
+
         });
+
+        updateButton.addActionListener(e -> {
+            JViewport viewport;
+            JTable current_tbl;
+
+            viewport = scrollPane.getViewport();
+            current_tbl = (JTable) viewport.getView();
+            if (current_tbl.getSelectedRow() != -1) {
+                updateRow();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Выберите строку!");
+            }
+        });
+
+        insertButton.addActionListener(e -> {
+            insertRow();
+        });
+
+        helpButton.addActionListener(e -> {
+            HelpFrame helpFrame = new HelpFrame();
+            helpFrame.setVisible(true);
+        });
+
+    }
+
+    private void insertRow() {
+
+        switch (String.valueOf(tablesComboBox.getSelectedItem())) {
+            case ("Сотрудники"):
+                insertFactory = new InsertEmployeeFactory();
+                additionalInsert = insertFactory.createFrame();
+                additionalInsert.makeFrame(scrollPane);
+                break;
+            case ("Отделы"):
+                insertFactory = new InsertDepartmentFactory();
+                additionalInsert = insertFactory.createFrame();
+                additionalInsert.makeFrame(scrollPane);
+                break;
+            case ("Должности"):
+                insertFactory = new InsertPositionFactory();
+                additionalInsert = insertFactory.createFrame();
+                additionalInsert.makeFrame(scrollPane);
+                break;
+        }
 
     }
 
@@ -104,7 +160,7 @@ public class GUI extends JFrame {
         }
     }
 
-    public void removeRow(JPanel mainPanel) {
+    public void removeRow() {
 
         JViewport viewport;
         JTable current_tbl;
@@ -146,6 +202,27 @@ public class GUI extends JFrame {
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+                break;
+        }
+    }
+
+    public void updateRow() {
+
+        switch (String.valueOf(tablesComboBox.getSelectedItem())) {
+            case ("Сотрудники"):
+                updateFactory = new UpdateEmployeeFactory();
+                additionalUpdate = updateFactory.createFrame();
+                additionalUpdate.makeFrame(scrollPane);
+                break;
+            case ("Отделы"):
+                updateFactory = new UpdateDepartmentFactory();
+                additionalUpdate = updateFactory.createFrame();
+                additionalUpdate.makeFrame(scrollPane);
+                break;
+            case ("Должности"):
+                updateFactory = new UpdatePositionsFactory();
+                additionalUpdate = updateFactory.createFrame();
+                additionalUpdate.makeFrame(scrollPane);
                 break;
         }
     }
