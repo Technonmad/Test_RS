@@ -6,7 +6,7 @@ import InsertFactory.InsertFactory;
 import UpdateFactory.UpdateFactory;
 import TableFactory.*;
 import UpdateFactory.*;
-import  InsertFactory.*;
+import InsertFactory.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
     private Insert additionalInsert = null;
     private Table table = null;
     private JScrollPane scrollPane = null;
+
     public MainFrame() {
         super("Учёт сотрудников предприятия");
         this.setBounds(250, 250, 600, 250);
@@ -88,8 +89,7 @@ public class MainFrame extends JFrame {
             current_tbl = (JTable) viewport.getView();
             if (current_tbl.getSelectedRow() != -1) {
                 updateRow();
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Выберите строку!");
             }
         });
@@ -161,48 +161,55 @@ public class MainFrame extends JFrame {
     }
 
     public void removeRow() {
+        try {
+            JViewport viewport;
+            JTable current_tbl;
+            int id;
 
-        JViewport viewport;
-        JTable current_tbl;
-        int id;
+            switch (String.valueOf(tablesComboBox.getSelectedItem())) {
+                case ("Сотрудники"):
+                    EmployeeDAO employeeDAO = new EmployeeDAOImp();
+                    viewport = scrollPane.getViewport();
+                    current_tbl = (JTable) viewport.getView();
+                    id = Integer.parseInt(String.valueOf(current_tbl.getValueAt(current_tbl.getSelectedRow(), 0)));
 
-        switch (String.valueOf(tablesComboBox.getSelectedItem())) {
-            case ("Сотрудники"):
-                EmployeeDAO employeeDAO = new EmployeeDAOImp();
-                viewport = scrollPane.getViewport();
-                current_tbl = (JTable) viewport.getView();
-                id = Integer.parseInt(String.valueOf(current_tbl.getValueAt(current_tbl.getSelectedRow(), 0)));
-                try {
-                    Employee employee = employeeDAO.get(id);
-                    employeeDAO.delete(employee);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-                break;
-            case ("Отделы"):
-                DepartmentDAO departmentDAO = new DepartmentDAOImp();
-                viewport = scrollPane.getViewport();
-                current_tbl = (JTable) viewport.getView();
-                id = Integer.parseInt(String.valueOf(current_tbl.getValueAt(current_tbl.getSelectedRow(), 0)));
-                try {
-                    Department department = departmentDAO.get(id);
-                    departmentDAO.delete(department);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-                break;
-            case ("Должности"):
-                PositionDAO positionDAO = new PositionDAOImp();
-                viewport = scrollPane.getViewport();
-                current_tbl = (JTable) viewport.getView();
-                id = Integer.parseInt(String.valueOf(current_tbl.getValueAt(current_tbl.getSelectedRow(), 0)));
-                try {
-                    Position position = positionDAO.get(id);
-                    positionDAO.delete(position);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-                break;
+                    try {
+                        Employee employee = employeeDAO.get(id);
+                        employeeDAO.delete(employee);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+
+                    break;
+                case ("Отделы"):
+                    DepartmentDAO departmentDAO = new DepartmentDAOImp();
+                    viewport = scrollPane.getViewport();
+                    current_tbl = (JTable) viewport.getView();
+                    id = Integer.parseInt(String.valueOf(current_tbl.getValueAt(current_tbl.getSelectedRow(), 0)));
+                    try {
+                        Department department = departmentDAO.get(id);
+                        departmentDAO.delete(department);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    break;
+                case ("Должности"):
+                    PositionDAO positionDAO = new PositionDAOImp();
+                    viewport = scrollPane.getViewport();
+                    current_tbl = (JTable) viewport.getView();
+                    id = Integer.parseInt(String.valueOf(current_tbl.getValueAt(current_tbl.getSelectedRow(), 0)));
+                    try {
+                        Position position = positionDAO.get(id);
+                        positionDAO.delete(position);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    break;
+            }
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Выберите строку для удаления!");
         }
     }
 
