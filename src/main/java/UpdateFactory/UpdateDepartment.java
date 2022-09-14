@@ -25,7 +25,7 @@ public class UpdateDepartment implements Update {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.setBounds(250, 250, 500, 200);
-        ImageIcon img = new ImageIcon("src/main/java/Images/edit.png");
+        ImageIcon img = new ImageIcon("src/main/resources/Images/edit.png");
         frame.setIconImage(img.getImage());
 
         JPanel panel = new JPanel();
@@ -102,6 +102,9 @@ public class UpdateDepartment implements Update {
             try {
                 departmentDAO.update(department, oldId);
             } catch (SQLException ex) {
+
+                // Здесь я проверяю ошибку, которая выдается при попытке
+                // изменить id строки на существующий id
                 if (ex.getErrorCode() == 335544665) ;
                 {
                     JOptionPane.showMessageDialog(null, "Запись с таким id уже существует!");

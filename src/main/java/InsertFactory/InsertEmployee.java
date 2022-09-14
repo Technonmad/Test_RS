@@ -20,7 +20,7 @@ public class InsertEmployee implements Insert{
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.setBounds(250, 250, 500, 200);
-        ImageIcon img = new ImageIcon("src/main/java/Images/add.png");
+        ImageIcon img = new ImageIcon("src/main/resources/Images/add.png");
         frame.setIconImage(img.getImage());
 
         JPanel panel = new JPanel();

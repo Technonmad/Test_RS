@@ -2,6 +2,7 @@ package GUI;
 
 import DAO.*;
 import DTO.*;
+import Database.Database;
 import InsertFactory.InsertFactory;
 import UpdateFactory.UpdateFactory;
 import TableFactory.*;
@@ -10,6 +11,8 @@ import InsertFactory.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 
@@ -28,8 +31,17 @@ public class MainFrame extends JFrame {
         super("Учёт сотрудников предприятия");
         this.setBounds(250, 250, 600, 250);
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ImageIcon img = new ImageIcon("src/main/java/Images/sql.png");
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                LoginFrame loginFrame = new LoginFrame();
+                loginFrame.setVisible(true);
+
+                MainFrame.super.dispose();
+            }
+        });
+        ImageIcon img = new ImageIcon("src/main/resources/Images/sql.png");
         this.setIconImage(img.getImage());
 
         JPanel mainPanel = new JPanel();

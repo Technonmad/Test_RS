@@ -16,7 +16,7 @@ public class EmployeeDAOImp implements EmployeeDAO {
 
     @Override
     public Employee get(int id) throws SQLException {
-        Connection con = Database.getConnection();
+        Connection con = Database.getInstance().getConnection();
         String sql = "select * from Employees where id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, id);
@@ -29,6 +29,11 @@ public class EmployeeDAOImp implements EmployeeDAO {
 
             employee = new Employee(emp_id, boss_id, first_name, last_name);
         }
+
+        con.close();
+        ps.close();
+        rs.close();
+
         return employee;
     }
 
@@ -36,7 +41,7 @@ public class EmployeeDAOImp implements EmployeeDAO {
     public List<Employee> getAll() throws SQLException {
 
         List<Employee> employeeList = new ArrayList<>();
-        Connection con = Database.getConnection();
+        Connection con = Database.getInstance().getConnection();
         String sql = "select * from Employees";
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
@@ -50,12 +55,16 @@ public class EmployeeDAOImp implements EmployeeDAO {
             employeeList.add(employee);
         }
 
+        con.close();
+        ps.close();
+        rs.close();
+
         return employeeList;
     }
 
     @Override
     public int insert(Employee expression) throws SQLException {
-        Connection con = Database.getConnection();
+        Connection con = Database.getInstance().getConnection();
         String sql = "insert into Employees (id, boss_id, first_name, last_name) values (?, ?, ?, ?)";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, expression.getId());
@@ -64,13 +73,16 @@ public class EmployeeDAOImp implements EmployeeDAO {
         ps.setString(4, expression.getLast_name());
         ps.executeUpdate();
 
+        con.close();
+        ps.close();
+
         return 0;
     }
 
     @Override
     public int update(Employee expression, int oldId) throws SQLException {
 
-        Connection con = Database.getConnection();
+        Connection con = Database.getInstance().getConnection();
         String sql = "update Employees set id = ?, boss_id = ?, first_name = ?, last_name = ? where id = ?;";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, expression.getId());
@@ -80,17 +92,23 @@ public class EmployeeDAOImp implements EmployeeDAO {
         ps.setInt(5, oldId);
         ps.executeUpdate();
 
+        con.close();
+        ps.close();
+
         return 0;
     }
 
     @Override
     public int delete(Employee expression) throws SQLException {
 
-        Connection con = Database.getConnection();
+        Connection con = Database.getInstance().getConnection();
         String sql = "delete from Employees where id = ?;";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, expression.getId());
         ps.executeUpdate();
+
+        con.close();
+        ps.close();
 
         return 0;
     }
