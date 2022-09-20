@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         super("Учёт сотрудников предприятия");
-        this.setBounds(250, 250, 600, 250);
+        this.setBounds(250, 250, 700, 250);
         this.setResizable(false);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
@@ -46,7 +46,7 @@ public class MainFrame extends JFrame {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);
-        mainPanel.setBounds(0, 0, 600, 200);
+        mainPanel.setBounds(0, 0, 700, 200);
         mainPanel.setBorder(BorderFactory.createEtchedBorder());
 
         JButton selectButton = new JButton("Показать");
@@ -99,11 +99,30 @@ public class MainFrame extends JFrame {
 
             viewport = scrollPane.getViewport();
             current_tbl = (JTable) viewport.getView();
-            if (current_tbl.getSelectedRow() != -1) {
-                updateRow();
-            } else {
-                JOptionPane.showMessageDialog(null, "Выберите строку!");
+
+            if (tablesComboBox.getSelectedItem() == "Сотрудники"){
+                int employeeId = Integer.parseInt(String.valueOf(current_tbl.getValueAt(current_tbl.getSelectedRow(), 0)));
+                int bossId = Integer.parseInt(String.valueOf(current_tbl.getValueAt(current_tbl.getSelectedRow(), 1)));
+                if (employeeId != bossId){
+                    if (current_tbl.getSelectedRow() != -1) {
+                        updateRow();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Выберите строку!");
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Вы не можете редактировать записи руководителей!");
+                }
             }
+            else {
+                if (current_tbl.getSelectedRow() != -1) {
+                    updateRow();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Выберите строку!");
+                }
+            }
+
+
         });
 
         insertButton.addActionListener(e -> {
@@ -222,6 +241,7 @@ public class MainFrame extends JFrame {
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(null, "Выберите строку для удаления!");
+            throw new RuntimeException(e);
         }
     }
 

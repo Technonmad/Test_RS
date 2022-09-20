@@ -31,7 +31,7 @@ public class DepartmentsTable implements Table{
             }
             table.setModel(model);
             JScrollPane scrollPane = new JScrollPane(table);
-            scrollPane.setBounds(120,10,450,180);
+            scrollPane.setBounds(120,10,550,180);
             return scrollPane;
 
         } catch (SQLException ex) {

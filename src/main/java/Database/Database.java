@@ -5,9 +5,6 @@ import java.sql.*;
 public class Database {
 
     private static Database database;
-//    private String url = "jdbc:firebirdsql://localhost:3050/c:/Databases/test_db.fdb";
-    //private String user = "sysdba";
-    //private String password = "masterkey";
     public String url;
     public String user;
     public String password;
@@ -23,7 +20,6 @@ public class Database {
     }
     public void setUrl(String url){
         this.url = url;
-        //System.out.println(this.url);
     }
 
     public void setUser(String user) {

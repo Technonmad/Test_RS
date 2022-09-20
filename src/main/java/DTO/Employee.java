@@ -6,6 +6,9 @@ public class Employee {
     private int boss_id;
     private String first_name;
     private String last_name;
+    private  String dep_name;
+    private String position;
+    private int salary;
 
     @Override
     public String toString() {
@@ -14,14 +17,20 @@ public class Employee {
                 ", boss_id=" + boss_id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
+                ", dep_name='" + dep_name + '\'' +
+                ", position='" + position + '\'' +
+                ", salary=" + salary +
                 '}';
     }
 
-    public Employee(int id, int boss_id, String first_name, String last_name) {
+    public Employee(int id, int boss_id, String first_name, String last_name, String dep_name, String position, int salary) {
         this.id = id;
         this.boss_id = boss_id;
         this.first_name = first_name;
         this.last_name = last_name;
+        this.dep_name = dep_name;
+        this.position = position;
+        this.salary = salary;
     }
 
     public int getId() {
@@ -54,5 +63,29 @@ public class Employee {
 
     public void setLast_name(String last_name) {
         this.last_name = last_name;
+    }
+
+    public String getDep_name() {
+        return dep_name;
+    }
+
+    public void setDep_name(String dep_name) {
+        this.dep_name = dep_name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 }
